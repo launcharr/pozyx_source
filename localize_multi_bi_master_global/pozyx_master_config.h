@@ -8,6 +8,7 @@ uint16_t remote_id = NULL;                            // set this to the ID of t
 bool remote = false;                                    // set this to true to use the remote ID
 
 boolean use_processing = true;                         // set this to true to output data for the processing sketch   
+boolean debug_ranging = true;
 
 // laser dist
 // uint8_t num_anchors = 4;                                    // the number of anchors
@@ -16,6 +17,8 @@ boolean use_processing = true;                         // set this to true to ou
 // int32_t anchors_y[4] = {19400, 2560, -6000, -17436};                  // anchor y-coordinates in mm
 // int32_t heights[4] = {2070, 2800, 2850, 2250};              // anchor z-coordinates in mm
 
+// old ranges
+device_range_t old_range[16];
 
 // anchor configuration BI
 uint8_t num_anchors = 4;                                    // the number of anchors
