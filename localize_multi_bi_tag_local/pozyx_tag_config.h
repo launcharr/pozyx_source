@@ -13,11 +13,11 @@
 #define UWB_MSG_STATUS_WAITING 0
 #define UWB_MSG_STATUS_PROCESS 1
 
-uint8_t uwb_msg_reinit = 0x23;
-uint8_t uwb_msg_do_positioning = 0x55;
+const uint8_t uwb_msg_reinit = 0x23;
+const uint8_t uwb_msg_do_positioning = 0x55;
 
-uint8_t uwb_msg_status_waiting = 0;
-uint8_t uwb_msg_status_process = 1;
+const uint8_t uwb_msg_status_waiting = 0;
+const uint8_t uwb_msg_status_process = 1;
 
 
 ////////////////////////////////////////////////

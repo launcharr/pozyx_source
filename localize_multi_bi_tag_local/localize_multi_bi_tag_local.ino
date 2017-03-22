@@ -21,7 +21,6 @@ int32_t anchors_x_default[4] = {0, -19230, 18450, -8500};               // ancho
 int32_t anchors_y_default[4] = {19400, 2560, -6000, -17436};                  // anchor y-coordinates in mm
 int32_t heights_default[4] = {2070, 2800, 2850, 2250};              // anchor z-coordinates in mm
 
-
 uint8_t id_byte; // id byte
 
 byte int_pin = 2;
@@ -115,12 +114,15 @@ void loop()
 {
   int ii;
   device_range_t range;
-  if(status == UWB_MSG_STATUS_PROCESS) 
+  if(status == uwb_msg_status_process) 
   {
-    status = UWB_MSG_STATUS_WAITING;
+    Pozyx.readRXBufferData(&msg, 1);
+    
+    status = uwb_msg_status_waiting;
+    
     switch(msg) 
     {
-      case UWB_MSG_DO_POSITIONING:
+      case uwb_msg_do_positioning:
       {
         if (Pozyx.doPositioning(&position,NULL,NULL,height))
         {
@@ -174,20 +176,20 @@ void loop()
         Pozyx.sendData(master_tag, &id_byte, 1);
         break;
       }
-      case UWB_MSG_REINIT: 
+      case uwb_msg_reinit: 
       {
         init();
         break;
       }
     }
+    msg = 0;
   }
 }
 
 // interrupt routine for position
 void pos_int()
 {
-  Pozyx.readRXBufferData(&msg, 1);
-  status = UWB_MSG_STATUS_PROCESS;
+  status = uwb_msg_status_process;
 }
 
 // prints the coordinates for either humans or for processing
