@@ -13,11 +13,11 @@
 #define UWB_MSG_STATUS_WAITING 0
 #define UWB_MSG_STATUS_PROCESS 1
 
-uint8_t uwb_msg_reinit = 0x23;
-uint8_t uwb_msg_do_positioning = 0x55;
+const uint8_t uwb_msg_reinit = 0x23;
+const uint8_t uwb_msg_do_positioning = 0x55;
 
-uint8_t uwb_msg_status_waiting = 0;
-uint8_t uwb_msg_status_process = 1;
+const uint8_t uwb_msg_status_waiting = 0;
+const uint8_t uwb_msg_status_process = 1;
 
 
 ////////////////////////////////////////////////
@@ -29,6 +29,8 @@ bool remote = false;                                    // set this to true to u
 boolean use_processing = true;                         // set this to true to output data for the processing sketch   
 boolean debug_ranging = true;
 
+uint8_t algorithm = POZYX_POS_ALG_UWB_ONLY;             // positioning algorithm to use
+uint8_t dimension = POZYX_2_5D;                           // positioning dimension
 int32_t height = 800;                                  // height of device, required in 2.5D positioning
 
 // master related stuff

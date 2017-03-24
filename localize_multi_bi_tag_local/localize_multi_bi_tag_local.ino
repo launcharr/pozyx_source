@@ -115,34 +115,33 @@ void loop()
 {
   int ii;
   device_range_t range;
-  if(status == UWB_MSG_STATUS_PROCESS) 
+
+  if(status == uwb_msg_status_process) 
   {
-    status = UWB_MSG_STATUS_WAITING;
+    Pozyx.readRXBufferData(&msg, 1);
+    status = uwb_msg_status_waiting;
     switch(msg) 
     {
-      case UWB_MSG_DO_POSITIONING:
+      case uwb_msg_do_positioning:
       {
-        if (Pozyx.doPositioning(&position,NULL,NULL,height))
+        if (Pozyx.doPositioning(&position,dimension,height, algorithm))
         {
           if(debug_ranging && num_anchors_tag)
           {
+            Serial.print("RNG,");Serial.print(num_anchors_tag);Serial.print(",");
             for(ii = 0; ii < num_anchors_tag; ii++) 
             {
+              Serial.print(anchors_tag[ii], HEX);
               if(Pozyx.getDeviceRangeInfo(anchors_tag[ii], &range) == POZYX_SUCCESS) 
               {
                 if(range.timestamp != old_range[ii].timestamp) 
-                {
-                  Serial.print("Range from ");
-                  Serial.print(anchors_tag[ii], HEX);
-                  Serial.print(": ");
+                {     
+                  Serial.print(",");
                   Serial.print(range.distance);
-                  Serial.print("\n");
                 }
                 else 
                 {
-                  Serial.print("Range from ");
-                  Serial.print(anchors_tag[ii], HEX);
-                  Serial.print(" failed!\n");
+                  Serial.print("-1");
                 }
                   /*
                   Serial.print("\tTimestamp form ");
@@ -160,13 +159,15 @@ void loop()
               else 
               {
                 Pozyx.doRanging(anchors_tag[ii], &range);
-                Serial.print("New range from ");
-                Serial.print(anchors_tag[ii], HEX);
-                Serial.print(": ");
-                Serial.print(range.distance);
-                Serial.print("\n");
+                Serial.print("-2");
               }
+              
+              if (ii < num_anchors_tag-1) 
+                Serial.print(",");
+              else
+                Serial.print("\n");
             }
+            
           }
           // prints out the result
           printCoordinates(position);
@@ -174,20 +175,20 @@ void loop()
         Pozyx.sendData(master_tag, &id_byte, 1);
         break;
       }
-      case UWB_MSG_REINIT: 
+      case uwb_msg_reinit: 
       {
         init();
         break;
       }
     }
+    msg = 0;
   }
 }
 
 // interrupt routine for position
 void pos_int()
 {
-  Pozyx.readRXBufferData(&msg, 1);
-  status = UWB_MSG_STATUS_PROCESS;
+  status = uwb_msg_status_process;
 }
 
 // prints the coordinates for either humans or for processing
