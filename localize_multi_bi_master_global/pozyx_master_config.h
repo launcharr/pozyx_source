@@ -32,7 +32,8 @@ uint8_t algorithm = POZYX_POS_ALG_UWB_ONLY;             // positioning algorithm
 uint8_t dimension = POZYX_2_5D;                           // positioning dimension
 int32_t height = 800;                                  // height of device, required in 2.5D positioning
 
-int num_tags = 1;
-uint16_t tags[1] = {0x6077};
+const int num_tags = 1;
+uint16_t tags[num_tags] = {0x6077};
+int32_t height[num_tags] = 800;                                  // height of device, required in 2.5D positioning
 
 #endif

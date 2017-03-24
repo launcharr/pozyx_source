@@ -51,7 +51,7 @@ void loop(){
     coordinates_t position;
     device_range_t range;
     
-    int status = Pozyx.doRemotePositioning(tags[i], &position, dimension, height, algorithm);
+    int status = Pozyx.doRemotePositioning(tags[i], &position, dimension, height[i], algorithm);
     if (status == POZYX_SUCCESS)
     {
       if(debug_ranging)
@@ -189,6 +189,26 @@ void setRemoteAnchorsManual(){
       Serial.print("Configuring ID 0x");
       Serial.print(tags[i], HEX);
       Serial.println(" success!");
+
+      if(Pozyx.saveConfiguration(POZYX_FLASH_ANCHOR_IDS, NULL, NULL, tags[i]) != POZYX_SUCCESS)
+      {
+        Serial.print("Anchor conf not saved for tag ");
+        Serial.print(tags[i]);
+        Serial.print("!!\n");
+        delay(200);
+        //abort();
+      }
+      delay(50);
+      if(Pozyx.saveConfiguration(POZYX_FLASH_NETWORK, NULL, NULL, tags[i]) != POZYX_SUCCESS)
+      {
+        Serial.print("Network conf not saved for tag ");
+        Serial.print(tags[i]);
+        Serial.print("!!\n");
+        delay(200);
+        //abort();
+      }
+      delay(50);
+      Pozyx.resetSystem(tags[i]);
     }
     else
     {
